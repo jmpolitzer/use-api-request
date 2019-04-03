@@ -9,7 +9,6 @@ import {
 } from "react-testing-library";
 import ComponentMock from "../__mocks__/componentMock";
 
-
 afterEach(cleanup);
 
 describe("useApiRequest", () => {
@@ -35,6 +34,17 @@ describe("useApiRequest", () => {
     await waitForElement(() => getByTestId("thing"));
     await waitForElement(() => getByTestId("thang"));
     expect(getAllByTestId("thing").length).toBe(2);
-    expect(getAllByTestId("thang").length).toBe(2);
+    expect(getAllByTestId("thang").length).toBe(3);
+  });
+
+  it("should make multiple sequential requests", async () => {
+    const { getByText, getByTestId, getAllByTestId } = render(
+      <ComponentMock />
+    );
+
+    fireEvent.click(getByText("Get ThingThangs"))
+    // expect(getByTestId("fetching-thingThangs")).toHaveTextContent("fetching thingThangs");
+    await waitForElement(() => getByTestId("thingThang"));
+    expect(getAllByTestId("thingThang").length).toBe(2);
   });
 });
