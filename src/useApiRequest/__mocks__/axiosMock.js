@@ -48,3 +48,7 @@ export const axiosMock = {
     return Promise.resolve({ data });
   }
 };
+
+export const axiosError = {
+  request: () => Promise.reject(new Error('welp, we\'ve got an error'))
+};

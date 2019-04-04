@@ -1,7 +1,7 @@
 import logger from "./helpers/logger";
 
 function createReducer() {
-  return function(state = {}, action) {
+  return function(state, action) {
     const { resource } = action.payload;
 
     switch (action.type) {
@@ -37,8 +37,6 @@ function createReducer() {
             ...action.payload.error
           }
         };
-      default:
-        throw new Error();
     }
   };
 }
@@ -46,6 +44,7 @@ function createReducer() {
 function buildReducer(debug) {
   const reducer = createReducer();
 
+  /* istanbul ignore next */
   if (debug === true && process.env.NODE_ENV === "development") {
     return logger(reducer);
   } else {

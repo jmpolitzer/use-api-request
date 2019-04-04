@@ -1,10 +1,9 @@
 import React from "react";
 import { useApiRequest } from "../../index";
-import { axiosMock } from "./axiosMock";
 
-function ComponentMock() {
+function ComponentMock({ axios }) {
   const apiConfig = {
-    axios: axiosMock,
+    axios: axios,
     key: "testing",
     debug: true
   };
@@ -31,7 +30,7 @@ function ComponentMock() {
   };
 
   const sequentialRequest = {
-    things: {
+    thing: {
       url: "/things/2",
       useApi: {
         keepFromState: true,
@@ -56,6 +55,7 @@ function ComponentMock() {
       {things &&
         things.data.length > 0 &&
         things.data.map(thing => <div data-testid="thing" key={thing.id}>{thing.text}</div>)}
+      {errors.things && <div data-testid="things-error">{errors.things.message}</div>}
 
       {fetching.includes("things-thangs") && (
         <div data-testid="fetching-multi">fetching multiple resources</div>
@@ -63,8 +63,9 @@ function ComponentMock() {
       {thangs &&
         thangs.data.length > 0 &&
         thangs.data.map(thang => <div data-testid="thang" key={thang.id}>{thang.text}</div>)}
+      {errors['things-thangs'] && <div data-testid="things-thangs-error">{errors['things-thangs'].message}</div>}
 
-      {fetching.includes('thingThangs') && (
+      {fetching.includes("thingThangs") && (
         <div data-testid="fetching-thingThangs">fetching thingThangs</div>
       )}
       {thingThangs &&
