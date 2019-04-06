@@ -4,6 +4,7 @@ import { useApiRequest } from "../../index";
 function ComponentMock({ axios }) {
   const apiConfig = {
     axios: axios,
+    key: 'testing',
     debug: true
   };
   const { state, makeApiRequest, makeApiRequests } = useApiRequest(apiConfig);

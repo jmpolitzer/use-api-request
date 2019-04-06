@@ -3,16 +3,13 @@ import { useReducer, useCallback } from "react";
 import { handleFetching, handleSuccess, handleError } from "./actions";
 import buildReducer from "./reducer";
 
-function useApiRequest({ axios, debug }) {
+function useApiRequest({ axios, key, debug }) {
   const initialState = {
     fetching: [],
     resources: {},
     errors: {}
   };
 
-  const key = Math.random()
-    .toString(36)
-    .substr(2, 5);
   const reducer = useCallback(buildReducer(debug), [key]);
   const [state, dispatch] = useReducer(reducer, initialState);
 

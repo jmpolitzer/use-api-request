@@ -1,5 +1,21 @@
 import logger from "./helpers/logger";
 
+const filterFetching = (action, state) => state.fetching.filter(
+  resource => resource !== action.payload.resource
+);
+
+const filterErrors = (action, state) => {
+  const e = Object.keys(state.errors).reduce((acc, error) => {
+    if (error !== action.payload.resource) {
+      acc[error] = state.errors[error];
+    }
+
+    return acc;
+  }, {});
+
+  return e;
+};
+
 function createReducer() {
   return function(state, action) {
     const { resource } = action.payload;
@@ -8,30 +24,22 @@ function createReducer() {
       case `${resource}/FETCHING`:
         return {
           ...state,
-          fetching: [...state.fetching, action.payload.resource]
+          fetching: [...state.fetching, action.payload.resource],
+          errors: filterErrors(action, state)
         };
       case `${resource}/SUCCESS`:
         return {
-          fetching: state.fetching.filter(
-            resource => resource !== action.payload.resource
-          ),
+          fetching: filterFetching(action, state),
           resources: {
             ...state.resources,
             ...action.payload.response
           },
-          errors: {
-            ...state.errors,
-            ...(state.errors[action.payload.resource] && {
-              [action.payload.resource]: null
-            })
-          }
+          errors: filterErrors(action, state)
         };
       case `${resource}/ERROR`:
         return {
           ...state,
-          fetching: state.fetching.filter(
-            resource => resource !== action.payload.resource
-          ),
+          fetching: filterFetching(action, state),
           errors: {
             ...state.errors,
             ...action.payload.error
