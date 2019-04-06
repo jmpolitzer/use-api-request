@@ -66,7 +66,7 @@ describe("useApiRequest", () => {
     );
 
     fireEvent.click(getByText("Get ThingThangs"));
-    // expect(getByTestId("fetching-thingThangs")).toHaveTextContent("fetching thingThangs");
+    expect(getByTestId("fetching-thingThangs")).toHaveTextContent("fetching thingThangs");
     await waitForElement(() => getByTestId("thingThang"));
     expect(getAllByTestId("thingThang").length).toBe(2);
   });

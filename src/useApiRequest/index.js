@@ -3,13 +3,16 @@ import { useReducer, useCallback } from "react";
 import { handleFetching, handleSuccess, handleError } from "./actions";
 import buildReducer from "./reducer";
 
-function useApiRequest({ axios, key, debug }) {
+function useApiRequest({ axios, debug }) {
   const initialState = {
     fetching: [],
     resources: {},
     errors: {}
   };
 
+  const key = Math.random()
+    .toString(36)
+    .substr(2, 5);
   const reducer = useCallback(buildReducer(debug), [key]);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -39,21 +42,20 @@ function useApiRequest({ axios, key, debug }) {
 
   const makeApiRequest = (config, prevResponse) => {
     const resource = Object.keys(config)[0];
-    const { useApi = {}, url, ...rest } = config[resource];
-    const { keepFromState, next } = useApi;
+    const { next, isNext, url, ...rest } = config[resource];
     const request = { ...rest, url: replaceParams(url, prevResponse) };
 
-    if (!keepFromState) dispatch(handleFetching(resource));
+    if (!isNext) dispatch(handleFetching(resource));
 
     axios
       .request(request)
       .then(response => {
-        if (!keepFromState) {
-          dispatch(handleSuccess(resource, { [resource]: response }));
-        }
-
         if (next) {
-          makeApiRequest(next, response);
+          const nextConfig = { [resource]: { ...next, isNext: true } };
+
+          makeApiRequest(nextConfig, response);
+        } else {
+          dispatch(handleSuccess(resource, { [resource]: response }));
         }
       })
       .catch(e => onError(resource, e));

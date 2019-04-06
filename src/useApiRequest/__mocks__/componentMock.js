@@ -4,7 +4,6 @@ import { useApiRequest } from "../../index";
 function ComponentMock({ axios }) {
   const apiConfig = {
     axios: axios,
-    key: "testing",
     debug: true
   };
   const { state, makeApiRequest, makeApiRequests } = useApiRequest(apiConfig);
@@ -30,15 +29,10 @@ function ComponentMock({ axios }) {
   };
 
   const sequentialRequest = {
-    thing: {
+    thingThangs: {
       url: "/things/2",
-      useApi: {
-        keepFromState: true,
-        next: {
-          thingThangs: {
-            url: "/thangs?thingId={{data.id}}"
-          }
-        }
+      next: {
+        url: "/thangs?thingId={{data.id}}"
       }
     }
   };
