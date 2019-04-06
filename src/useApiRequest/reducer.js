@@ -52,8 +52,6 @@ function createReducer() {
             ...action.payload.error
           }
         };
-      default:
-        throw new Error();
     }
   };
 }
@@ -61,6 +59,7 @@ function createReducer() {
 function buildReducer(debug) {
   const reducer = createReducer();
 
+  /* istanbul ignore next */
   if (debug === true && process.env.NODE_ENV === "development") {
     return logger(reducer);
   } else {
