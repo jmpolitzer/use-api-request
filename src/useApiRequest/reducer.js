@@ -24,7 +24,7 @@ function createReducer() {
     switch (action.type) {
       case `${resource}/FETCHING`:
         return {
-          fetching: [...state.fetching, action.payload.resource].flat(),
+          fetching: [...state.fetching, action.payload.resource].reduce((acc, val) => acc.concat(val), []),
           resources: filterResourcesOrErrors(
             action.payload.resource,
             state.resources
