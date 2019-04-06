@@ -1,31 +1,35 @@
 import logger from "./helpers/logger";
 
-const filterFetching = (action, state) => state.fetching.filter(
-  resource => resource !== action.payload.resource
-);
+const filterFetching = (action, state) =>
+  state.fetching.filter(
+    resource => !action.payload.resource.includes(resource)
+  );
 
-const filterErrors = (action, state) => {
-  const e = Object.keys(state.errors).reduce((acc, error) => {
-    if (error !== action.payload.resource) {
-      acc[error] = state.errors[error];
+const filterResourcesOrErrors = (resource, resources) => {
+  const r = Object.keys(resources).reduce((acc, res) => {
+    if (!resource.includes(res)) {
+      acc[res] = resources[res];
     }
 
     return acc;
   }, {});
 
-  return e;
+  return r;
 };
 
 function createReducer() {
-  return function(state, action) {
+  return function(state = {}, action) {
     const { resource } = action.payload;
 
     switch (action.type) {
       case `${resource}/FETCHING`:
         return {
-          ...state,
-          fetching: [...state.fetching, action.payload.resource],
-          errors: filterErrors(action, state)
+          fetching: [...state.fetching, action.payload.resource].flat(),
+          resources: filterResourcesOrErrors(
+            action.payload.resource,
+            state.resources
+          ),
+          errors: filterResourcesOrErrors(action.payload.resource, state.errors)
         };
       case `${resource}/SUCCESS`:
         return {
@@ -34,17 +38,22 @@ function createReducer() {
             ...state.resources,
             ...action.payload.response
           },
-          errors: filterErrors(action, state)
+          errors: filterResourcesOrErrors(action.payload.resource, state.errors)
         };
       case `${resource}/ERROR`:
         return {
-          ...state,
           fetching: filterFetching(action, state),
+          resources: filterResourcesOrErrors(
+            action.payload.resource,
+            state.resources
+          ),
           errors: {
             ...state.errors,
             ...action.payload.error
           }
         };
+      default:
+        throw new Error();
     }
   };
 }
@@ -52,7 +61,6 @@ function createReducer() {
 function buildReducer(debug) {
   const reducer = createReducer();
 
-  /* istanbul ignore next */
   if (debug === true && process.env.NODE_ENV === "development") {
     return logger(reducer);
   } else {

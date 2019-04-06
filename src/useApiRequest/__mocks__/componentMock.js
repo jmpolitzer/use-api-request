@@ -3,9 +3,8 @@ import { useApiRequest } from "../../index";
 
 function ComponentMock({ axios }) {
   const apiConfig = {
-    axios: axios,
-    key: 'testing',
-    debug: true
+    axios: axios
+    // debug: true
   };
   const { state, makeApiRequest, makeApiRequests } = useApiRequest(apiConfig);
   const {
@@ -21,11 +20,11 @@ function ComponentMock({ axios }) {
   };
 
   const multiRequest = {
-    things: {
-      url: "/things"
-    },
     thangs: {
       url: "/thangs"
+    },
+    things: {
+      url: "/things"
     }
   };
 
@@ -41,31 +40,51 @@ function ComponentMock({ axios }) {
   return (
     <div>
       <button onClick={() => makeApiRequest(thingsRequest)}>Get Things</button>
-      <button onClick={() => makeApiRequests(multiRequest)}>Get Multiple Resources</button>
-      <button onClick={() => makeApiRequest(sequentialRequest)}>Get ThingThangs</button>
+      <button onClick={() => makeApiRequests(multiRequest)}>
+        Get Multiple Resources
+      </button>
+      <button onClick={() => makeApiRequest(sequentialRequest)}>
+        Get ThingThangs
+      </button>
 
       {fetching.includes("things") && (
         <div data-testid="fetching-things">fetching things</div>
       )}
       {things &&
         things.data.length > 0 &&
-        things.data.map(thing => <div data-testid="thing" key={thing.id}>{thing.text}</div>)}
-      {errors.things && <div data-testid="things-error">{errors.things.message}</div>}
+        things.data.map(thing => (
+          <div data-testid="thing" key={thing.id}>
+            {thing.text}
+          </div>
+        ))}
+      {errors.things && (
+        <div data-testid="things-error">{errors.things.message}</div>
+      )}
 
-      {fetching.includes("things-thangs") && (
-        <div data-testid="fetching-multi">fetching multiple resources</div>
+      {fetching.includes("thangs") && (
+        <div data-testid="fetching-thangs">fetching multiple resources</div>
       )}
       {thangs &&
         thangs.data.length > 0 &&
-        thangs.data.map(thang => <div data-testid="thang" key={thang.id}>{thang.text}</div>)}
-      {errors['things-thangs'] && <div data-testid="things-thangs-error">{errors['things-thangs'].message}</div>}
+        thangs.data.map(thang => (
+          <div data-testid="thang" key={thang.id}>
+            {thang.text}
+          </div>
+        ))}
+      {errors.thangs && (
+        <div data-testid="thangs-error">{errors.thangs.message}</div>
+      )}
 
       {fetching.includes("thingThangs") && (
         <div data-testid="fetching-thingThangs">fetching thingThangs</div>
       )}
       {thingThangs &&
         thingThangs.data.length > 0 &&
-        thingThangs.data.map(thingThang => <div data-testid="thingThang" key={thingThang.id}>{thingThang.text}</div>)}
+        thingThangs.data.map(thingThang => (
+          <div data-testid="thingThang" key={thingThang.id}>
+            {thingThang.text}
+          </div>
+        ))}
     </div>
   );
 }

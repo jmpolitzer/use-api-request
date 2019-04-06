@@ -34,7 +34,7 @@ function useApiRequest({ axios, key, debug }) {
   };
 
   const onError = (resource, error) => {
-    dispatch(handleError(resource, { [resource]: error }));
+    dispatch(handleError(resource, error));
   };
 
   const makeApiRequest = (config, prevResponse) => {
@@ -52,19 +52,27 @@ function useApiRequest({ axios, key, debug }) {
 
           makeApiRequest(nextConfig, response);
         } else {
-          dispatch(handleSuccess(resource, { [resource]: response }));
+          dispatch(handleSuccess([resource], { [resource]: response }));
         }
       })
-      .catch(e => onError(resource, e));
+      .catch(e => onError(resource, { [resource]: e }));
   };
 
   const makeApiRequests = config => {
     const resources = Object.keys(config);
-    const joinedResources = resources.join("-");
 
-    dispatch(handleFetching(joinedResources));
+    dispatch(handleFetching(resources));
 
-    Promise.all(resources.map(key => axios.request(config[key])))
+    Promise.all(
+      resources.map(key =>
+        axios.request({
+          ...config[key],
+          headers: {
+            resourceKey: key
+          }
+        })
+      )
+    )
       .then(responses => {
         const response = resources.reduce((acc, resource, i) => {
           acc[resource] = responses[i];
@@ -72,9 +80,13 @@ function useApiRequest({ axios, key, debug }) {
           return acc;
         }, {});
 
-        dispatch(handleSuccess(joinedResources, response));
+        dispatch(handleSuccess(resources, response));
       })
-      .catch(e => onError(joinedResources, e));
+      .catch(e => {
+        const resource = e.config.headers.resourceKey;
+
+        return onError(resources, { [resource]: e });
+      });
   };
 
   return { state, makeApiRequest, makeApiRequests };
