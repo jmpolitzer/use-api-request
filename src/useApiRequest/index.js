@@ -42,7 +42,7 @@ function useApiRequest({ axios, key, debug }) {
     const { next, isNext, url, ...rest } = config[resource];
     const request = { ...rest, url: replaceParams(url, prevResponse) };
 
-    if (!isNext) dispatch(handleFetching(resource));
+    if (!isNext) dispatch(handleFetching([resource]));
 
     axios
       .request(request)
@@ -55,7 +55,7 @@ function useApiRequest({ axios, key, debug }) {
           dispatch(handleSuccess([resource], { [resource]: response }));
         }
       })
-      .catch(e => onError(resource, { [resource]: e }));
+      .catch(e => onError([resource], { [resource]: e }));
   };
 
   const makeApiRequests = config => {

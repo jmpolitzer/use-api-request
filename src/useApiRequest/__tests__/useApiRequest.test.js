@@ -78,5 +78,9 @@ describe("useApiRequest", () => {
     );
     await waitForElement(() => getByTestId("thingThang"));
     expect(getAllByTestId("thingThang").length).toBe(2);
+
+    /* These events are here to test a branch of the filterResourcesOrErrors reducer method. */
+    fireEvent.click(getByText("Get Things"));
+    fireEvent.click(getByText("Get ThingThangs"));
   });
 });

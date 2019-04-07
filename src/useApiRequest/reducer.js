@@ -18,7 +18,7 @@ const filterResourcesOrErrors = (resource, resources) => {
 };
 
 function createReducer() {
-  return function(state = {}, action) {
+  return function(state, action) {
     const { resource } = action.payload;
 
     switch (action.type) {
