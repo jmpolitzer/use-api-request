@@ -1,6 +1,11 @@
 # use-api-request
 
-A simple React hook for making network requests using Axios.
+> A simple React hook for making network requests using Axios.
+
+[![NPM](https://img.shields.io/npm/v/use-api-request.svg)](https://www.npmjs.com/package/use-api-request)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Build Status](https://travis-ci.com/jmpolitzer/use-api-request.svg?branch=master)](https://travis-ci.com/jmpolitzer/use-api-request)
+[![Coverage Status](https://coveralls.io/repos/github/jmpolitzer/use-api-request/badge.svg?branch=master)](https://coveralls.io/github/jmpolitzer/use-api-request?branch=master)
 
 ## Install 
 
@@ -11,8 +16,8 @@ npm install --save use-api-request
 ## Example
 
 ```
-import axios from "axios";
-import { useApiRequest } from "./api";
+import axios from 'axios';
+import { useApiRequest } from 'use-api-request';
 
 function MyComponent() {
   const apiConfig = {
@@ -56,7 +61,7 @@ function MyComponent() {
 
 ## Features
 
-1. Make a single request:
+Make a single request:
     
  ```
  const singleRequestConfig = {
@@ -68,7 +73,7 @@ function MyComponent() {
  makeApiRequest(singleRequestConfig);
  ```
    
-2. Make multiple concurrent requests:
+Make multiple concurrent requests:
   
   ```
   const concurrentRequestsConfig = {
@@ -83,7 +88,7 @@ function MyComponent() {
   makeApiRequests(concurrentRequestsConfig);
   ```
 
-3. Make a sequential request (dependent variables are wrapped in double curly brackets): 
+Make a sequential request (dependent variables are wrapped in double curly brackets): 
 
   ```
   const sequentialRequestConfig = {
