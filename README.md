@@ -88,7 +88,7 @@ Make multiple concurrent requests:
   makeApiRequests(concurrentRequestsConfig);
   ```
 
-Make a sequential request (dependent variables are wrapped in double curly brackets): 
+Make a sequential request (dependent variables are wrapped in double curly brackets and will always be properties of `data`): 
 
   ```
   const sequentialRequestConfig = {
