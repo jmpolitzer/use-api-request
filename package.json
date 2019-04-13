@@ -1,6 +1,6 @@
 {
   "name": "use-api-request",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A React Hook for Making Api Requests Using Axios",
   "author": "jmpolitzer",
   "license": "MIT",
