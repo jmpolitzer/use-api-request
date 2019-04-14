@@ -53,7 +53,7 @@ function MyComponent() {
 
 ## Usage
 
-1. Pass a config object with an Axios instance and a `key` string, into `useApiRequest`. The Axios instance takes the exact same configurations as specified in the [documentation](https://www.npmjs.com/package/axios). Optionally include a `debug` flag if you'd like to see redux-like logging in your console.
+1. Pass a config object with an Axios instance and a unique `key` string into `useApiRequest`. The Axios instance takes the exact same configurations as specified in the [documentation](https://www.npmjs.com/package/axios). Optionally include a `debug` flag if you'd like to see redux-like logging in your console.
 
 2. Create a request object -- again, refer to the [Axios documentation](https://www.npmjs.com/package/axios) for examples -- and pass it into `makeApiRequest`. Note that this library uses `Axios.request()` under the hood. The request object is nothing more than an Axios request config object assigned to a resource key of your choosing. So, if you name the key `things`, you will find `things` many times within the state object. See below for more details.
 
