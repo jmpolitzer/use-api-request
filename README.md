@@ -15,7 +15,7 @@ npm install --save use-api-request
 
 ## Example
 
-```
+```javascript
 import axios from 'axios';
 import { useApiRequest } from 'use-api-request';
 
@@ -63,7 +63,7 @@ function MyComponent() {
 
 Make a single request:
     
- ```
+ ```javascript
  const singleRequestConfig = {
     posts: {
       url: "/posts"
@@ -75,7 +75,7 @@ Make a single request:
    
 Make multiple concurrent requests:
   
-  ```
+  ```javascript
   const concurrentRequestsConfig = {
       albums: {
         url: "/albums"
@@ -90,7 +90,7 @@ Make multiple concurrent requests:
 
 Make a sequential request (dependent variables are wrapped in double curly brackets and will always be properties of `data`): 
 
-  ```
+  ```javascript
   const sequentialRequestConfig = {
       userPosts: {
         url: "/posts/1",
@@ -105,7 +105,7 @@ Make a sequential request (dependent variables are wrapped in double curly brack
   
 ## API
 
-```
+```javascript
 const { state, makeApiRequest, makeApiRequests } = useApiRequest(apiConfig);
 const { fetching, resources, errors } = state;
 ```
